@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Sea Battle</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div class="background">
+        <div class="bubble bubble-1"></div>
+        <div class="bubble bubble-2"></div>
+        <div class="bubble bubble-3"></div>
+        <div class="bubble bubble-4"></div>
+        <div class="bubble bubble-5"></div>
+
+        <div class="wave wave-1"></div>
+        <div class="wave wave-2"></div>
+    </div>
+
+
+    <div class="app">
+
+        <!-- HEADER -->
+
+        <header class="header">
+
+            <div class="logo-box">
+                ⚓
+            </div>
+
+            <div>
+                <h1 data-i18n="title">
+                    МОРСКОЙ БОЙ
+                </h1>
+
+                <p data-i18n="subtitle">
+                    Эпическое сражение на море
+                </p>
+            </div>
+
+        </header>
+
+
+        <!-- SETTINGS -->
+
+        <section class="settings-panel">
+
+            <div class="setting-card">
+
+                <label for="languageSelect">
+                    🌍
+                    <span data-i18n="language">
+                        Язык
+                    </span>
+                </label>
+
+                <select id="languageSelect">
+                    <option value="ru">🇷🇺 Русский</option>
+                    <option value="en">🇬🇧 English</option>
+                    <option value="de">🇩🇪 Deutsch</option>
+                </select>
+
+            </div>
+
+
+            <div class="setting-card">
+
+                <label for="modeSelect">
+                    🎮
+                    <span data-i18n="mode">
+                        Режим
+                    </span>
+                </label>
+
+                <select id="modeSelect">
+                    <option value="ai" data-i18n="vsAI">
+                        🤖 Против ИИ
+                    </option>
+
+                    <option value="twoPlayers" data-i18n="twoPlayers">
+                        👥 Два игрока
+                    </option>
+                </select>
+
+            </div>
+
+
+            <div
+                class="setting-card"
+                id="difficultyCard"
+            >
+
+                <label for="difficultySelect">
+                    🧠
+                    <span data-i18n="difficulty">
+                        Сложность
+                    </span>
+                </label>
+
+                <select id="difficultySelect">
+
+                    <option value="easy" data-i18n="easy">
+                        Легко
+                    </option>
+
+                    <option value="medium" data-i18n="medium">
+                        Средне
+                    </option>
+
+                    <option value="hard" data-i18n="hard">
+                        Сложно
+                    </option>
+
+                </select>
+
+            </div>
+
+        </section>
+
+
+        <!-- GAME STATE -->
+
+        <section class="game-state">
+
+            <div class="turn-box">
+
+                <span class="turn-light"></span>
+
+                <span id="turnText">
+                    Подготовка
+                </span>
+
+            </div>
+
+
+            <div class="stats">
+
+                <div class="stat-card">
+
+                    <span data-i18n="moves">
+                        Ходы
+                    </span>
+
+                    <strong id="movesValue">
+                        0
+                    </strong>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <span data-i18n="hits">
+                        Попадания
+                    </span>
+
+                    <strong id="hitsValue">
+                        0
+                    </strong>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <span data-i18n="enemyHits">
+                        Попадания врага
+                    </span>
+
+                    <strong id="enemyHitsValue">
+                        0
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- STATUS -->
+
+        <div
+            class="status-message"
+            id="statusMessage"
+        >
+            Выберите корабль и поставьте его на поле.
+        </div>
+
+
+        <!-- SETUP PANEL -->
+
+        <section
+            class="setup-panel"
+            id="setupPanel"
+        >
+
+            <div class="setup-header">
+
+                <div>
+
+                    <h2 data-i18n="placementTitle">
+                        ⚓ Расстановка флота
+                    </h2>
+
+                    <p
+                        id="placementDescription"
+                        data-i18n="placementDescription"
+                    >
+                        Выберите корабль, затем нажмите на поле.
+                    </p>
+
+                </div>
+
+
+                <div class="orientation-badge">
+
+                    <span data-i18n="direction">
+                        Направление
+                    </span>
+
+                    <strong id="orientationText">
+                        →
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <!-- SHIP SELECTION -->
+
+            <div
+                class="placement-fleet"
+                id="placementFleet"
+            ></div>
+
+
+            <!-- PLACEMENT BUTTONS -->
+
+            <div class="placement-controls">
+
+                <button
+                    class="action-button rotate-button"
+                    id="rotateButton"
+                >
+                    🔄
+                    <span data-i18n="rotate">
+                        Повернуть
+                    </span>
+                </button>
+
+
+                <button
+                    class="action-button random-button"
+                    id="randomButton"
+                >
+                    🎲
+                    <span data-i18n="random">
+                        Случайно
+                    </span>
+                </button>
+
+
+                <button
+                    class="action-button clear-button"
+                    id="clearButton"
+                >
+                    🗑️
+                    <span data-i18n="clear">
+                        Очистить
+                    </span>
+                </button>
+
+
+                <button
+                    class="action-button ready-button disabled-button"
+                    id="readyButton"
+                    disabled
+                >
+                    ✅
+                    <span data-i18n="ready">
+                        Готов
+                    </span>
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <!-- BOARDS -->
+
+        <main
+            class="boards-container"
+            id="boardsContainer"
+        >
+
+            <!-- PLAYER BOARD -->
+
+            <section class="board-card">
+
+                <div class="board-title">
+
+                    <div class="title-left">
+
+                        <div class="board-icon">
+                            🚢
+                        </div>
+
+                        <div>
+
+                            <h2 id="leftBoardTitle">
+                                Ваш флот
+                            </h2>
+
+                            <p id="leftBoardSubtitle">
+                                Игрок 1
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div
+                        class="fleet-counter"
+                        id="leftFleetCounter"
+                    >
+                        0 / 7
+                    </div>
+
+                </div>
+
+
+                <div class="board-wrapper">
+
+                    <div class="letters">
+
+                        <span>A</span>
+                        <span>B</span>
+                        <span>C</span>
+                        <span>D</span>
+                        <span>E</span>
+                        <span>F</span>
+                        <span>G</span>
+                        <span>H</span>
+                        <span>I</span>
+                        <span>J</span>
+
+                    </div>
+
+
+                    <div class="board-row">
+
+                        <div class="numbers">
+
+                            <span>1</span>
+                            <span>2</span>
+                            <span>3</span>
+                            <span>4</span>
+                            <span>5</span>
+                            <span>6</span>
+                            <span>7</span>
+                            <span>8</span>
+                            <span>9</span>
+                            <span>10</span>
+
+                        </div>
+
+
+                        <div
+                            class="board"
+                            id="playerBoard"
+                        ></div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- ENEMY BOARD -->
+
+            <section
+                class="board-card"
+                id="enemyCard"
+            >
+
+                <div class="board-title">
+
+                    <div class="title-left">
+
+                        <div class="board-icon">
+                            💥
+                        </div>
+
+                        <div>
+
+                            <h2 id="rightBoardTitle">
+                                Флот противника
+                            </h2>
+
+                            <p id="rightBoardSubtitle">
+                                Компьютер
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div
+                        class="fleet-counter enemy-counter"
+                        id="rightFleetCounter"
+                    >
+                        7 / 7
+                    </div>
+
+                </div>
+
+
+                <div class="board-wrapper">
+
+                    <div class="letters">
+
+                        <span>A</span>
+                        <span>B</span>
+                        <span>C</span>
+                        <span>D</span>
+                        <span>E</span>
+                        <span>F</span>
+                        <span>G</span>
+                        <span>H</span>
+                        <span>I</span>
+                        <span>J</span>
+
+                    </div>
+
+
+                    <div class="board-row">
+
+                        <div class="numbers">
+
+                            <span>1</span>
+                            <span>2</span>
+                            <span>3</span>
+                            <span>4</span>
+                            <span>5</span>
+                            <span>6</span>
+                            <span>7</span>
+                            <span>8</span>
+                            <span>9</span>
+                            <span>10</span>
+
+                        </div>
+
+
+                        <div
+                            class="board enemy-board"
+                            id="enemyBoard"
+                        ></div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+        </main>
+
+
+        <!-- BATTLE FLEET -->
+
+        <section
+            class="fleet-panel"
+            id="fleetPanel"
+        >
+
+            <h2 id="fleetTitle">
+                Ваш флот
+            </h2>
+
+            <div
+                class="fleet-list"
+                id="fleetList"
+            ></div>
+
+        </section>
+
+
+        <!-- GAME BUTTON -->
+
+        <div class="bottom-controls">
+
+            <button
+                class="new-game-button"
+                id="newGameButton"
+            >
+                🔄
+                <span data-i18n="newGame">
+                    Новая игра
+                </span>
+            </button>
+
+        </div>
+
+
+        <footer>
+
+            <span>⚓ Sea Battle</span>
+
+            <span>
+                HTML • CSS • JavaScript
+            </span>
+
+        </footer>
+
+    </div>
+
+
+    <!-- PASS SCREEN -->
+
+    <div
+        class="overlay hidden"
+        id="passScreen"
+    >
+
+        <div class="modal">
+
+            <div class="modal-icon">
+                🔄
+            </div>
+
+            <h2 id="passTitle">
+                Передайте устройство
+            </h2>
+
+            <p id="passText">
+                Передайте устройство следующему игроку.
+            </p>
+
+            <button
+                class="new-game-button"
+                id="continueButton"
+            >
+                ▶
+                <span data-i18n="continue">
+                    Продолжить
+                </span>
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- WIN SCREEN -->
+
+    <div
+        class="overlay hidden"
+        id="winScreen"
+    >
+
+        <div class="modal winner-modal">
+
+            <div
+                class="winner-icon"
+                id="winnerIcon"
+            >
+                🏆
+            </div>
+
+            <h2 id="winnerTitle">
+                Победа!
+            </h2>
+
+            <p id="winnerText">
+                Вы уничтожили весь флот!
+            </p>
+
+            <button
+                class="new-game-button"
+                id="restartButton"
+            >
+                🔄
+                <span data-i18n="playAgain">
+                    Играть снова
+                </span>
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <script src="script.js"></script>
+
+</body>
+</html>
